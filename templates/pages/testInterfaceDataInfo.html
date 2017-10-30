@@ -1,0 +1,379 @@
+<section class="content-header">
+	<h1>
+		基础数据管理<small>接口信息管理</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+		<li><a href="#"><i class="fa fa-dashboard"></i> 基础数据管理</a></li>
+		<li><a href="#"><i class="fa fa-dashboard"></i> 参数设置</a></li>
+		<li class="active">接口信息管理</li>
+	</ol>
+</section>
+
+<input type="hidden" name="staticInterfaceId" id="staticInterfaceId">
+
+<div class="content">
+	<div class="container-fluid">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<!--search start-->
+				<!-- <div class="panel panel-default">
+					<div class="panel-body">
+						<div class="row">
+							<div
+								class="col-md-10 col-xs-10 col-lg-10 col-sm-10 noleftpaading search">
+								<form class="form-inline" role="form" id="searchForm">
+									<div class="col-md-4 col-xs-4 col-lg-4 col-sm-4">
+										<label for="formGroupInputSmall">主键:</label> <input
+											name="maps['idEnd']" data-type="text" data-rules="小于"
+											class="form-control" type="text">
+									</div>
+								</form>
+							</div>
+							<div class="col-md-2 col-xs-2 col-lg-2 col-sm-2  text-center">
+								<button type="button" class="btn btn-success "
+									onclick="$.testInterfaceDataInfoUtils.submit.search()">搜索</button>
+							</div>
+						</div>
+					</div>
+				</div> -->
+				<!--search end-->
+				<!--buttons start-->
+				<div class="row">
+					<div class="col-md-12 col-xs-12 col-lg-12 col-sm-12"
+						id="buttonsGroup">
+						<button type="button" id="addButtonId" class="btn btn-success"
+							onclick="$.testInterfaceDataInfoUtils.button.add()">新增参数</button>
+						&nbsp;&nbsp;&nbsp;&nbsp;当前接口地址： <span id="interfaceAddress">&nbsp;</span>
+					</div>
+
+				</div>
+				<!--buttons end-->
+				<!--table start  -->
+				<div class="row" style="margin-top: 20px;">
+					<div class="col-md-12 col-xs-12 col-lg-12 col-sm-12 panel-info">
+						<div class="panel-heading">
+							<h4 class="panel-title" id="tableTitle">参数设置</h4>
+						</div>
+						<div class="panel-body panel">
+							<div class="panel-content" id="tableContainer">
+								<table id="testInterfaceDataInfoTable"  data-toggle="table" data-page-list="[10,20,30,ALL]" data-pagination="true" data-cache="false" data-detail-view="false"
+									data-striped="true" data-show-columns="false" data-page-size="8"data-filter-control="false" data-filter-show-clear="false" data-toolbar="#roleTableToolbar"
+									data-side-pagination="server"
+									>
+									<thead>
+										<tr>
+											<th class="col-xs-4"data-field="requestJson" data-align="center">请求参数</th>
+											<th class="col-xs-4" data-field="responseJson" data-align="center">返回参数</th>
+											<th class="col-xs-1" data-field="requestType" data-align="center"
+												data-formatter="$.testInterfaceDataInfoUtils.formatter.requestType">参数类型</th>
+											<th class="col-xs-1"data-field="mockDefault" data-align="center"
+												data-formatter="$.testInterfaceDataInfoUtils.formatter.mockDefault">启动mock</th>
+											<th class="col-xs-2" data-field="operation" data-align="center"
+												data-formatter="$.testInterfaceDataInfoUtils.formatter.operation">操作</th>
+										</tr>
+									</thead>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--table end  -->
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 新增 模态框 -->
+<div class="modal fade fade bs-example-modal-lg"
+	id="addTestInterfaceDataInfoDialog" role="dialog" aria-hidden="true"
+	data-backdrop="static">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">×</button>
+				 <h4 class="modal-title text-primary text-center"><strong>新增参数</strong></h4> 
+			</div>
+			<div class="modal-body">
+				<div class="row-fluid">
+					<form class="form-horizontal" role="form"
+						id="addTestInterfaceDataInfoForm" novalidate>
+						<input type="hidden" name="id" readonly><!-- 这里id其实接收了接口id，数据传到后台后要进行调整 -->
+						<input type="hidden" name="requestType" value="1"><!-- 请求类型默认是手动输入 -->
+						<div class="row">
+							<div class="form-group">
+								<input type="hidden" name="interfaceId" id="interfaceId">
+								<label class="col-md-2 control-label">类名:</label>
+								<div class="col-md-9">
+									<input type="text" class="form-control" name="clsName"
+										id="clsName" readonly>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group">
+								<label class="col-md-2 control-label">方法名|URL:</label>
+								<div class="col-md-9">
+									<input type="text" class="form-control" name="methodName"
+										id="clsName" readonly>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group" >
+								<label class="col-md-2 control-label">请求参数:</label>
+								<div class="col-md-9">
+									<textarea class="form-control" id="requestJson" name="requestJson"
+										 ></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group">
+								<label class="col-md-2 control-label">返回参数:</label>
+								<div class="col-md-9">
+									<textarea class="form-control" id="responseJson" name="responseJson"
+									></textarea>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary"
+					onclick="$.testInterfaceDataInfoUtils.submit.addTestInterfaceDataInfo()">确定</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 修改模态框 -->
+<div class="modal fade fade bs-example-modal-lg"
+	id="updateTestInterfaceDataInfoDialog" role="dialog" aria-hidden="true"
+	data-backdrop="static">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">×</button>
+				 <h4 class="modal-title text-primary text-center"><strong>修改参数</strong></h4> 
+			</div>
+			<div class="modal-body">
+				<div class="row-fluid">
+					<form class="form-horizontal" role="form"
+						id="updateTestInterfaceDataInfoForm" novalidate>
+						<input type="hidden" name="id" readonly>
+						<input type="hidden" name="requestType" value="1"><!-- 请求类型默认是手动输入 -->
+						<div class="row">
+							<div class="form-group" >
+								<label class="col-md-2 control-label">请求参数:</label>
+								<div class="col-md-9">
+									<textarea class="form-control" id="requestJsonForUpdate" name="requestJson"
+										 style="height: 200px;"></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group">
+								<label class="col-md-2 control-label">返回参数:</label>
+								<div class="col-md-9">
+									<textarea class="form-control" id="responseJsonForUpdate" name="responseJson"
+									 style="height: 200px;"></textarea>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			
+			<div class="modal-footer">
+				<div style="display: inline;">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-primary"
+						onclick="$.testInterfaceDataInfoUtils.submit.updateTestInterfaceDataInfo()">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--  修改mock状态 模态框-->
+<div class="modal fade bs-example-modal-lg" id="changeMockDefaultDialog"
+	role="dialog" aria-hidden="true" data-backdrop="static">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">×</button>
+				 <h4 class="modal-title text-primary text-center"><strong>修改mock</strong></h4> 
+			</div>
+			<div class="modal-body">
+				<div class="row-fluid">
+					<form class="form-horizontal" role="form"
+						id="deleteTestAppInfoForm" novalidate>
+						<input name="id" id="idForChange" type="hidden">
+						<input name="mockDefaultForChange" id="mockDefaultForChange" type="hidden">
+						<h3 class="text-danger text-center">请确认是否改变默认mock状态?</h3>
+					</form>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div style="display: inline;">
+					<button type="button" class="btn btn-danger" data-dismiss="modal"
+						onclick = "">关闭</button>
+					<button type="button" class="btn btn-danger"
+						onclick="$.testInterfaceDataInfoUtils.submit.changeMockDefaultById()">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 删除 模态框-->
+<div class="modal fade bs-example-modal-lg"
+	id="deleteTestInterfaceDataInfoDialog" role="dialog" aria-hidden="true"
+	data-backdrop="static">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">×</button>
+				 <h4 class="modal-title text-primary text-center"><strong>删除参数</strong></h4> 
+			</div>
+			<div class="modal-body">
+				<div class="row-fluid">
+					<form class="form-horizontal" role="form"
+						id="deleteTestInterfaceDataInfoForm" novalidate>
+						<input name="id" id="idForDel" type="hidden">
+						<h3 class="text-danger text-center">请确认是否删除?</h3>
+					</form>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div style="display: inline;">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-danger"
+						onclick="$.testInterfaceDataInfoUtils.submit.deleteByPrimaryKey()">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 查看 模态框 -->
+<div class="modal fade fade bs-example-modal-lg"
+	id="showTestInterfaceDataInfoDialog" role="dialog" aria-hidden="true"
+	data-backdrop="static">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">×</button>
+				 <h4 class="modal-title text-primary text-center"><strong>查看参数</strong></h4> 
+			</div>
+			<div class="modal-body">
+				<div class="row-fluid">
+					<form class="form-horizontal" role="form"
+						id="showTestInterfaceDataInfoForm" novalidate>
+						<div class="row">
+							<div class="form-group col-md-6 col-xs-6 col-lg-6 col-sm-6">
+								<label class="col-sm-3 control-label">主键:</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" name="id" readonly>
+								</div>
+							</div>
+							<div class="form-group col-md-6 col-xs-6 col-lg-6 col-sm-6">
+								<label class="col-sm-3 control-label">接口id:</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" name="interfaceId"
+										readonly>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group col-md-6 col-xs-6 col-lg-6 col-sm-6">
+								<label class="col-sm-3 control-label">请求参数:</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" name="requestJson"
+										readonly>
+								</div>
+							</div>
+							<div class="form-group col-md-6 col-xs-6 col-lg-6 col-sm-6">
+								<label class="col-sm-3 control-label">返回参数:</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" name="responseJson"
+										readonly>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group col-md-6 col-xs-6 col-lg-6 col-sm-6">
+								<label class="col-sm-3 control-label">参数类型:</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" name="requestType"
+										readonly>
+								</div>
+							</div>
+							<div class="form-group col-md-6 col-xs-6 col-lg-6 col-sm-6">
+								<label class="col-sm-3 control-label">启动mock:</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" name="mockDefault"
+										readonly>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group col-md-6 col-xs-6 col-lg-6 col-sm-6">
+								<label class="col-sm-3 control-label">创建时间:</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" name="createTime"
+										readonly>
+								</div>
+							</div>
+							<div class="form-group col-md-6 col-xs-6 col-lg-6 col-sm-6">
+								<label class="col-sm-3 control-label">更新时间:</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" name="updateTime"
+										readonly>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div style="display: inline;">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 批量操作 模态框-->
+<div class="modal fade bs-example-modal-lg"
+	id="batchTestInterfaceDataInfoDialog" role="dialog" aria-hidden="true"
+	data-backdrop="static">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">×</button>
+				 <h4 class="modal-title text-primary text-center"><strong>批量操作</strong></h4> 
+			</div>
+			<div class="modal-body">
+				<div class="row-fluid">
+					<h3 class="text-danger text-center">请确认是否进行批量删除?</h3>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div style="display: inline;">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-danger"
+						onclick="$.testInterfaceDataInfoUtils.submit.batch()">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="../assets/js/testInterfaceDataInfo.js"
+	type="text/javascript"></script>

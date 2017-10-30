@@ -1,0 +1,223 @@
+<section class="content-header">
+	<h1>
+		系统管理<small>权限管理</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+		<li><a href="#"><i class="fa fa-dashboard"></i> 系统管理</a></li>
+		<li class="active">权限管理</li>
+	</ol>
+</section>
+
+<div class="content">
+
+	<!-- 总体布局模式 .container-fluid 类用于100%宽度-->
+	<div id="inner-content" class="container-fluid">
+		<div class="panel panel-default">
+			<div class="panel-body">
+
+				<div class="row">
+					<div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
+						<button type="button" class="btn btn-info" onclick="$.operateTableUtils.queryList()">刷新</button>
+						<button type="button" class="btn btn-primary" onclick="$.operateTableUtils.button.add()">新增</button>
+					</div>
+				</div>
+
+				<div class="row" style="margin-top: 20px;">
+					<div class="col-md-12 col-xs-12 col-lg-12 col-sm-12 panel-info">
+						<div class="panel-heading">
+							<h4 class="panel-title">数据表格基本信息</h4>
+						</div>
+						<div class="panel-body panel">
+							<div class="panel-content">
+								<!-- table表格 -->
+								<table id="operateTableTable" data-toggle="table" data-page-list="[10,20,30,ALL]" data-pagination="true" data-cache="false"
+									data-detail-view="false" data-striped="true" data-show-columns="false" data-filter-control="false" data-filter-show-clear="false"
+									data-toolbar="#operateTableTableToolbar" data-side-pagination="server">
+									<thead>
+										<tr>
+											<th data-checkbox="true"></th>
+											<th data-field="sysTableEname" data-align="center">英文表名</th>
+											<th data-field="sysTableCname" data-align="center">中文表名</th>
+											<th data-field="operation" data-align="center" data-formatter="$.operateTableUtils.formatter.operation">操作</th>
+										</tr>
+									</thead>
+
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="dialogs">
+				<!-- 新增 模态框 -->
+				<div class="modal fade" id="addOperateTableDialog" role="dialog" aria-hidden="true" data-backdrop="static">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								<h4 class="modal-title">新增</h4>
+							</div>
+
+							<div class="modal-body">
+								<div class="row-fluid">
+									<form class="form-horizontal" role="form" id="addOperateTableForm" novalidate="novalidate">
+
+										<div class="form-group">
+											<label class="col-sm-3 control-label">英文表名<span style="font-size: 15px;color: red;">*</span></label>
+											<div class="col-sm-7">
+												<input type="text" class="form-control" name="sysTableEname" placeholder="不得包含中文字符">
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label class="col-sm-3 control-label">中文表名<span style="font-size: 15px;color: red;">*</span></label>
+											<div class="col-sm-7">
+												<input type="text" class="form-control" name="sysTableCname" placeholder="必须包含中文字符">
+											</div>
+										</div>
+									</form>
+								</div>
+
+							</div>
+
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+								<button type="button" class="btn btn-primary" onclick="$.operateTableUtils.submit.addOperateTable()">确定</button>
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+
+				<!-- 查看 模态框 -->
+				<div class="modal fade" id="showOperateTableDialog" role="dialog" aria-hidden="true" data-backdrop="static">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								<h4 class="modal-title">查看</h4>
+							</div>
+
+							<div class="modal-body">
+								<div class="row-fluid">
+									<form class="form-horizontal" role="form" id="showOperateTableForm" novalidate="novalidate">
+										<div class="form-group">
+
+											<label class="col-sm-3 control-label">英文表名:</label>
+											<div class="col-sm-7">
+												<input type="text" class="form-control" name="sysTableEname" readonly>
+											</div>
+										</div>
+										<div class="form-group">
+
+											<label class="col-sm-3 control-label">中文表名:</label>
+											<div class="col-sm-7">
+												<input type="text" class="form-control" name="sysTableCname" readonly>
+											</div>
+										</div>
+									</form>
+								</div>
+
+							</div>
+
+							<div class="modal-footer">
+								<div style="display: inline;">
+									<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+				<!-- 修改 模态框 -->
+				<div class="modal fade" id="updateOperateTableDialog" role="dialog" aria-hidden="true" data-backdrop="static">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								<h4 class="modal-title">修改</h4>
+							</div>
+
+							<div class="modal-body">
+								<div class="row-fluid">
+									<form class="form-horizontal" role="form" id="updateOperateTableForm" novalidate="novalidate">
+
+										<div class="form-group" style="display: none;">
+											<label class="col-sm-3 control-label">主键，自增:</label>
+											<div class="col-sm-7">
+												<input type="text" class="form-control" name="id" readonly>
+											</div>
+										</div>
+										
+										<div class="form-group">
+											<label class="col-sm-3 control-label">英文表名:</label>
+											<div class="col-sm-7">
+												<input type="text" class="form-control" name="sysTableEname">
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label class="col-sm-3 control-label">中文表名:</label>
+											<div class="col-sm-7">
+												<input type="text" class="form-control" name="sysTableCname">
+											</div>
+										</div>
+
+									</form>
+								</div>
+
+							</div>
+
+							<div class="modal-footer">
+								<div style="display: inline;">
+									<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+									<button type="button" class="btn btn-primary" onclick="$.operateTableUtils.submit.updateOperateTable()">确定</button>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+				<!-- 删除 模态框-->
+				<div class="modal fade bs-example-modal-sm" id="deleteOperateTableDialog" role="dialog" aria-hidden="true" data-backdrop="static">
+					<div class="modal-dialog modal-sm">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								<h4 class="modal-title">删除</h4>
+							</div>
+
+							<div class="modal-body">
+								<div class="row-fluid">
+									<form class="form-horizontal" role="form" id="deleteOperateTableForm" novalidate="novalidate">
+
+
+										<input name="id" id="idForDel" type="hidden">
+
+										<h3 class="text-danger text-center">请确认是否删除?</h3>
+									</form>
+								</div>
+
+							</div>
+
+							<div class="modal-footer">
+								<div style="display: inline;">
+									<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+									<button type="button" class="btn btn-danger" onclick="$.operateTableUtils.submit.deleteByPrimaryKey()">确定</button>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+<script src="../assets/js/operateTable.js"></script>

@@ -1,0 +1,50 @@
+.radius{width: 30px; height: 30px; background-color: lightgray; border-radius: 30px;}
+#appNameList table{text-align: center;width: 100px;font-size: 18px;}
+
+.header-params{
+	height:28px;
+	padding:3px 8px;
+	font-size: 14px;
+	text-align: center;
+	margin-bottom:5px;
+}
+
+.desk{
+    line-height: 120px;
+    text-align: center;
+    font-size: 24px;
+}
+
+a.button {
+			position: relative;
+			color: rgba(255,255,255,1);
+			height：80px;
+			text-decoration: none;
+			background-color: rgb(60, 141, 188);
+			font-family: 'Yanone Kaffeesatz';
+			font-weight: 700;
+			font-size: 1em;
+			display: block;
+			padding: 4px;
+			-webkit-border-radius: 8px;
+			-moz-border-radius: 8px;
+			border-radius: 8px;
+			-webkit-box-shadow: 0px 9px 0px rgba(219,31,5,1), 0px 9px 25px rgba(0,0,0,.7);
+			-moz-box-shadow: 0px 9px 0px rgba(219,31,5,1), 0px 9px 25px rgba(0,0,0,.7);
+			box-shadow: 0px 9px 0px rgb(54, 127, 169), 0px 9px 25px rgba(0,0,0,.7);
+			margin: 100px auto;
+			width: 160px;
+			text-align: center;
+			-webkit-transition: all .1s ease;
+			-moz-transition: all .1s ease;
+			-ms-transition: all .1s ease;
+			-o-transition: all .1s ease;
+			transition: all .1s ease;
+		}
+a.button:active{
+			-webkit-box-shadow: 0px 3px 0px rgba(249, 249, 249, 0.84), 0px 3px 6px rgba(0,0,0,.9);
+			-moz-box-shadow: 0px 3px 0px rgba(249, 249, 249, 0.84), 0px 3px 6px rgba(0,0,0,.9);
+			box-shadow: 0px 3px 0px rgba(249, 249, 249, 0.84), 0px 3px 6px rgba(0,0,0,.9);
+			position: relative;
+			top: 6px;
+		}

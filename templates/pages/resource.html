@@ -1,0 +1,752 @@
+<section class="content-header">
+	<h1>
+		系统管理<small>菜单管理</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+		<li><a href="#"><i class="fa fa-sun-o"></i> 基础数据管理</a></li>
+		<li class="active"><i class="fa fa-wrench"></i>&nbsp;菜单管理</li>
+	</ol>
+</section>
+
+
+<div class="content">
+	<!-- 总体布局模式 .container-fluid 类用于100%宽度-->
+	<div id="inner-content" class="container-fluid">
+
+		<div class="panel panel-default">
+			<div class="panel-body">
+
+				<div id="inner-row" class="row">
+					<div class="col-md-12 col-xs-12 col-lg-12 col-sm-12 panel-info">
+						<!-- zTree -->
+						<div id="goodsTableToolbar" class="form-inline">
+							<button type="button" class="btn btn-success glyphicon btn-sm"
+								onclick="$.resource.addResource()">新增一级菜单</button>
+						</div>
+						<div style="height: 20px;"></div>
+						<ul id="resourceTree" class="ztree nopadding"></ul>
+						<!-- 	</div>
+							</div> -->
+						<!-- zTree -->
+					</div>
+				</div>
+
+				<div id="dialogs">
+					<!-- 查看 模态框 -->
+					<div class="modal fade" id="showResourceDialog" role="dialog"
+						aria-hidden="true" data-backdrop="static">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-hidden="true">&times;</button>
+									<h4 class="modal-title">查看</h4>
+								</div>
+
+								<div class="modal-body">
+									<div class="row-fluid">
+										<form class="form-horizontal" role="form"
+											id="showResourceForm" novalidate="novalidate">
+
+											<div class="form-group">
+
+												<label class="col-sm-3 control-label">主键，自增:</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control" name="id" readonly>
+												</div>
+											</div>
+											<div class="form-group">
+
+												<label class="col-sm-3 control-label">唯一键，关联键:</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control"
+														name="sysResourceUid" readonly>
+												</div>
+											</div>
+											<div class="form-group">
+
+												<label class="col-sm-3 control-label">资源节点名字:</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control"
+														name="sysResourceName" readonly>
+												</div>
+											</div>
+											<div class="form-group">
+
+												<label class="col-sm-3 control-label">资源级别:</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control"
+														name="sysResourceLevel" readonly>
+												</div>
+											</div>
+											<div class="form-group">
+
+												<label class="col-sm-3 control-label">资源操作url:</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control"
+														name="sysResourcePath" readonly>
+												</div>
+											</div>
+											<div class="form-group">
+
+												<label class="col-sm-3 control-label">父节点uid:</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control" name="sysParentUid"
+														readonly>
+												</div>
+											</div>
+											<div class="form-group">
+
+												<label class="col-sm-3 control-label">创建时间:</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control" name="createtime"
+														readonly>
+												</div>
+											</div>
+											<div class="form-group">
+
+												<label class="col-sm-3 control-label">更新时间:</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control" name="updatetime"
+														readonly>
+												</div>
+											</div>
+											<div class="form-group">
+
+												<label class="col-sm-3 control-label">更新用户uid:</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control" name="updateuid"
+														readonly>
+												</div>
+											</div>
+										</form>
+									</div>
+
+								</div>
+
+								<div class="modal-footer">
+									<div style="display: inline;">
+										<button type="button" class="btn btn-default"
+											data-dismiss="modal">关闭</button>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+					<!-- 修改 模态框 -->
+					<div class="modal fade" id="updateResourcTreeDialog" role="dialog"
+						aria-hidden="true" data-backdrop="static">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-hidden="true">&times;</button>
+									<h4 class="modal-title text-primary text-center">
+										<strong>修改资源节点</strong>
+									</h4>
+								</div>
+
+								<div class="modal-body">
+									<div class="row-fluid">
+										<form class="form-horizontal" role="form"
+											id="updateResourceForm" novalidate="novalidate">
+
+											<div class="form-group">
+												<label class="col-sm-3 control-label">资源节点名字:</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control"
+														name="sysResourceName" id="sysResourceNameUpd">
+												</div>
+											</div>
+											<input type="hidden" name="id" id="idForUpdate"> </input> <input
+												type="hidden" name="sysResourceUid"></input>
+											<div class="form-group" id="updateResourceTreeDialogUrl">
+												<label class="col-sm-3 control-label">资源操作url:</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control"
+														name="sysResourcePath" id="sysResourcePathUpd">
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-sm-3 control-label">资源节点图标<span
+													style="font-size: 15px; color: red;">*</span></label>
+												<div class="col-sm-7">
+													<i class="" id="editicon"></i><i
+														class="fa  fa-plus-square btn btn-info"
+														onclick="$.resource.selecticon()"
+														style="margin-left: 16px;">修改资源节点图标</i> <input type="text"
+														class="form-control hidden" name="icon" id="editIcon">
+												</div>
+
+											</div>
+										</form>
+									</div>
+
+								</div>
+
+								<div class="modal-footer">
+									<div style="display: inline;">
+
+										<button type="button" class="btn btn-primary"
+											onclick="$.resource.updateResource()">确定</button>
+										<button type="button" class="btn btn-info"
+											data-dismiss="modal">关闭</button>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+					<!-- zTree新增 模态框 -->
+					<div class="modal fade" id="addResourceTreeDialog" role="dialog"
+						aria-hidden="true" data-backdrop="static">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-hidden="true">&times;</button>
+									<h4 class="modal-title text-primary text-center">
+										<strong>新增资源节点</strong>
+									</h4>
+								</div>
+
+								<div class="modal-body">
+									<div class="row-fluid">
+										<form class="form-horizontal" role="form" id="addResourceForm"
+											novalidate="novalidate">
+
+											<div class="form-group">
+												<label class="col-sm-3 control-label">资源节点名字<span
+													style="font-size: 15px; color: red;">*</span></label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control"
+														name="sysResourceName" placeholder="必填">
+												</div>
+											</div>
+
+											<input type="hidden" name="sysResourceLevel"> </input> <input
+												type="hidden" name="sysParentUid"></input>
+											<div class="form-group" id="addResourceTreeDialogUrl">
+												<label class="col-sm-3 control-label">资源操作url<span
+													style="font-size: 15px; color: red;">*</span></label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control"
+														name="sysResourcePath" placeholder="形如'/pages/demo'">
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-sm-3 control-label">资源节点图标<span
+													style="font-size: 15px; color: red;">*</span></label>
+												<div class="col-sm-7">
+													<i class="" id="icon"></i><i
+														class="fa  fa-plus-square btn btn-info"
+														onclick="$.resource.selecticon()"
+														style="margin-left: 16px;">选择图标</i> <input type="text"
+														class="form-control hidden" name="icon" id="subIcon">
+												</div>
+
+											</div>
+										</form>
+									</div>
+
+								</div>
+
+								<div class="modal-footer">
+									<button type="button" class="btn btn-primary"
+										onclick="$.resourceUtils.submit.addResource()">确定</button>
+									<button type="button" class="btn btn-danger"
+										data-dismiss="modal">关闭</button>
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+					<!--选择图标的modal  -->
+					<div class="modal fade" id="selecticon">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-hidden="true">&times;</button>
+									<h4 class="modal-title text-center text-success">
+										<strong>选择资源节点图标</strong>
+									</h4>
+								</div>
+
+								<div class="modal-body"
+									style="padding-right: 0px; padding-left: 23px;">
+									<!-- Font Awesome Icons -->
+
+									<!--  <h4 class="page-header">66 New Icons in 4.4</h4> -->
+									<div class="row">
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" checked="checked"
+												name="icon" value="fa fa-coffee"><i
+												class="fa  fa-coffee"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-laptop"><i class="fa fa-laptop"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-briefcase"><i class="fa  fa-briefcase"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-calendar"><i class="fa fa-calendar"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-user"><i class="fa fa-user"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-book"><i class="fa fa-book"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-archive"><i class="fa fa-archive"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-database"><i class="fa fa-database"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-institution"><i
+												class="fa fa-institution"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-user-plus"><i class="fa fa-user-plus"></i>
+											</label>
+
+										</div>
+
+									</div>
+									<div class="row">
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa  fa-qq"><i class="fa  fa-qq"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-bell"><i class="fa fa-bell"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-wechat"><i class="fa  fa-wechat"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-windows"><i class="fa fa-windows"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-bitbucket"><i class="fa fa-bell"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa  fa-home"><i class="fa  fa-home"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-hourglass"><i class="fa fa-bell"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-graduation-cap"><i
+												class="fa  fa-graduation-cap"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-folder"><i class="fa fa-folder"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-wrench"><i class="fa  fa-wrench"></i>
+											</label>
+
+										</div>
+
+									</div>
+									<div class="row">
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-ship"><i class="fa fa-ship"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-folder-open"><i
+												class="fa fa-folder-open"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="glyphicon glyphicon-cloud"><i
+												class="glyphicon glyphicon-cloud"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="glyphicon glyphicon-briefcase"><i
+												class="glyphicon glyphicon-briefcase"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="glyphicon glyphicon-lamp"><i
+												class="glyphicon glyphicon-lamp"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="glyphicon glyphicon-blackboard"><i
+												class="glyphicon glyphicon-blackboard"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="glyphicon glyphicon-oil"><i
+												class="glyphicon glyphicon-oil"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="glyphicon glyphicon-bed"><i
+												class="glyphicon glyphicon-bed"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="glyphicon glyphicon-piggy-bank"><i
+												class="glyphicon glyphicon-piggy-bank"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="glyphicon glyphicon-tree-deciduous"><i
+												class="glyphicon glyphicon-tree-deciduous"></i>
+											</label>
+
+										</div>
+
+									</div>
+									<div class="row">
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-train"><i class="fa fa-train"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-pie-chart"><i class="fa fa-pie-chart"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-bookmark"><i class="fa fa-bookmark"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-asterisk"><i class="fa fa-asterisk"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-circle"><i class="fa fa-circle"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-y-combinator"><i
+												class="fa fa-y-combinator"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-gamepad"><i class="fa fa-gamepad"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa  fa-crop"><i class="fa  fa-crop"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-certificate"><i
+												class="fa fa-certificate"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-envelope"><i class="fa fa-envelope"></i>
+											</label>
+
+										</div>
+
+									</div>
+									<div class="row">
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa  fa-gears "><i class="fa  fa-gears "></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-heart"><i class="fa fa-heart"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-sitemap"><i class="fa fa-sitemap"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa  fa-leaf"><i class="fa  fa-leaf"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-legal "><i class="fa fa-legal "></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-plus-square"><i
+												class="fa fa-plus-square"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-plus-circle"><i
+												class="fa fa-plus-circle"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-plus"><i class="fa fa-plus"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-share-alt"><i class="fa fa-share-alt"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-sun-o"><i class="fa fa-sun-o"></i>
+											</label>
+
+										</div>
+
+									</div>
+									<div class="row">
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-send"><i class="fa fa-send"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-trophy"><i class="fa fa-trophy"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-suitcase"><i class="fa fa-suitcase"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa  fa-circle-o"><i class="fa  fa-circle-o"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa  fa-meanpath"><i class="fa  fa-meanpath"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-bitbucket-square "><i
+												class="fa fa-bitbucket-square "></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa  fa-black-tie"><i class="fa  fa-black-tie"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa  fa-bitbucket"><i class="fa  fa-bitbucket"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa fa-stack-exchange"><i
+												class="fa fa-stack-exchange"></i>
+											</label>
+
+										</div>
+										<div class="radio-inline col-md-1">
+											<label> <input type="radio" name="icon"
+												value="fa  fa-pause"><i class="fa fa-pause"></i>
+											</label>
+
+										</div>
+
+									</div>
+								</div>
+								<!-- /#fa-icons -->
+
+
+								<!-- /#ion-icons -->
+								<div class="modal-footer">
+									<button type="button" class="btn btn-primary"
+										onclick="$.resourceUtils.submit.addIcon()">确定</button>
+									<button type="button" class="btn btn-success"
+										data-dismiss="modal">关闭</button>
+
+								</div>
+							</div>
+
+
+
+						</div>
+					</div>
+
+				</div>
+				<!-- zTree删除 模态框-->
+				<div class="modal fade bs-example-modal-sm"
+					id="deleteResourceTreeDialog" role="dialog" aria-hidden="true"
+					data-backdrop="static">
+					<div class="modal-dialog modal-sm">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"
+									aria-hidden="true">&times;</button>
+								<h3 class="modal-title">删除</h3>
+							</div>
+
+							<div class="modal-body">
+								<div class="row-fluid">
+									<form class="form-horizontal" role="form"
+										id="deleteResourceForm" novalidate="novalidate">
+
+
+										<input name="id" id="idForDel" type="hidden">
+
+										<h4>请慎重，操作不可逆。</h4>
+										<h4>后所有用户都不可访问。</h4>
+										<h4>资源及下级资源都不可访问。</h4>
+									</form>
+								</div>
+
+							</div>
+
+							<div class="modal-footer">
+								<div style="display: inline;">
+
+									<button type="button" class="btn btn-danger"
+										onclick="$.resource.deleteResource()">确定</button>
+									<button type="button" class="btn btn-danger"
+										data-dismiss="modal">关闭</button>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+</div>
+</div>
+
+<script src="../assets/js/resource.js"></script>

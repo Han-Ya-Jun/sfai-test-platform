@@ -1,0 +1,8 @@
+.search label {
+	display: -moz-inline-box;
+	display: inline-block;
+	width: 100px;
+}
+.search .col-xs-4 {
+    margin-bottom: 10px;
+}

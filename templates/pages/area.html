@@ -1,0 +1,247 @@
+<section class="content-header">
+	<h1>
+		其他管理<small>地域管理</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+		<li><a href="#"><i class="fa fa-dashboard"></i> 其他管理</a></li>
+		<li class="active">地域管理</li>
+	</ol>
+</section>
+<div class="content">
+
+	<!-- 总体布局模式 .container-fluid 类用于100%宽度-->
+	<div id="inner-content" class="container-fluid">
+
+		<div class="panel panel-default">
+			<!-- panel 面板主体-->
+			<div class="panel-body">
+
+				<div id="inner-row" class="row">
+					<div class="col-md-12 col-xs-12 col-lg-12 col-sm-12 panel-info">
+						<!-- zTree -->
+						<div id="goodsTableToolbar" class="form-inline">
+							<button type="button" class="btn btn-success glyphicon btn-sm" onclick="$.area.addResource()">新增一级菜单</button>
+						</div>
+						<div style="height: 20px;"></div>
+						<ul id="areaTree" class="ztree nopadding"></ul>
+						<!-- zTree -->
+					</div>
+				</div>
+
+				<div id="dialogs">
+					<!-- 新增 模态框 -->
+					<div class="modal fade" id="addAreaDialog" role="dialog" aria-hidden="true" data-backdrop="static">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title">新增</h4>
+								</div>
+
+								<div class="modal-body">
+									<div class="row-fluid">
+										<form class="form-horizontal" role="form" id="addAreaForm" novalidate="novalidate">
+
+											<div class="form-group">
+												<label class="col-sm-3 control-label">地区名字<span style="font-size: 15px;color: red;">*</span></label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control" name="sysAreaName" placeholder="必填">
+												</div>
+											</div>
+
+											<input type="hidden" class="form-control" name="sysAreaLevel"> <input type="hidden" class="form-control" name="sysParentUid">
+
+											<!-- <div class="form-group">
+											<label class="col-sm-3 control-label">级别-0:国家，根1：省2：市3：县(区)4：镇:</label>
+											<div class="col-sm-7">
+												<input type="text" class="form-control" name="sysAreaLevel">
+											</div>
+										</div> -->
+
+										</form>
+									</div>
+
+								</div>
+
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+									<button type="button" class="btn btn-primary" onclick="$.areaUtils.submit.addArea()">确定</button>
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+
+					<!-- 查看 模态框 -->
+					<div class="modal fade" id="showAreaDialog" role="dialog" aria-hidden="true" data-backdrop="static">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title">查看</h4>
+								</div>
+
+								<div class="modal-body">
+									<div class="row-fluid">
+										<form class="form-horizontal" role="form" id="showAreaForm" novalidate="novalidate">
+
+											<div class="form-group">
+
+												<label class="col-sm-3 control-label">主键，自增:</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control" name="id" readonly>
+												</div>
+											</div>
+											<div class="form-group">
+
+												<label class="col-sm-3 control-label">唯一键，关联键:</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control" name="sysAreaUid" readonly>
+												</div>
+											</div>
+											<div class="form-group">
+
+												<label class="col-sm-3 control-label">地区名字:</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control" name="sysAreaName" readonly>
+												</div>
+											</div>
+											<div class="form-group">
+
+												<label class="col-sm-3 control-label">级别-0:国家，根1：省2：市3：县(区)4：镇:</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control" name="sysAreaLevel" readonly>
+												</div>
+											</div>
+											<div class="form-group">
+
+												<label class="col-sm-3 control-label">父节点uid:</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control" name="sysParentUid" readonly>
+												</div>
+											</div>
+											<div class="form-group">
+
+												<label class="col-sm-3 control-label">创建时间:</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control" name="createtime" readonly>
+												</div>
+											</div>
+											<div class="form-group">
+
+												<label class="col-sm-3 control-label">更新时间:</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control" name="updatetime" readonly>
+												</div>
+											</div>
+											<div class="form-group">
+
+												<label class="col-sm-3 control-label">更新用户uid:</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control" name="updateuid" readonly>
+												</div>
+											</div>
+										</form>
+									</div>
+
+								</div>
+
+								<div class="modal-footer">
+									<div style="display: inline;">
+										<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+					<!-- 修改 模态框 -->
+					<div class="modal fade" id="updateAreaDialog" role="dialog" aria-hidden="true" data-backdrop="static">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title">修改</h4>
+								</div>
+
+								<div class="modal-body">
+									<div class="row-fluid">
+										<form class="form-horizontal" role="form" id="updateAreaForm" novalidate="novalidate">
+
+											<div class="form-group" style="display: none;">
+												<label class="col-sm-3 control-label">主键，自增:</label>
+												<div class="col-sm-7">
+													<input id="idForUpdate" type="text" class="form-control" name="id" readonly>
+												</div>
+											</div>
+
+											<div class="form-group">
+												<label class="col-sm-3 control-label">地区名字:</label>
+												<div class="col-sm-7">
+													<input id="sysAreaNameUpd" type="text" class="form-control" name="sysAreaName">
+												</div>
+											</div>
+
+										</form>
+									</div>
+
+								</div>
+
+								<div class="modal-footer">
+									<div style="display: inline;">
+										<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+										<button type="button" class="btn btn-primary" onclick="$.area.updateResource()">确定</button>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+					<!-- 删除 模态框-->
+					<div class="modal fade bs-example-modal-sm" id="deleteAreaDialog" role="dialog" aria-hidden="true" data-backdrop="static">
+						<div class="modal-dialog modal-sm">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title">删除</h4>
+								</div>
+
+								<div class="modal-body">
+									<div class="row-fluid">
+										<form class="form-horizontal" role="form" id="deleteAreaForm" novalidate="novalidate">
+
+
+											<input name="id" id="idForDel" type="hidden">
+
+											<h3 class="text-danger text-center">请确认是否删除?</h3>
+										</form>
+									</div>
+
+								</div>
+
+								<div class="modal-footer">
+									<div style="display: inline;">
+										<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+										<button type="button" class="btn btn-danger" onclick="$.area.deleteResource()">确定</button>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+
+
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<script src="../assets/js/area.js"></script>

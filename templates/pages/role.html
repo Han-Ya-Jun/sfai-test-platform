@@ -1,0 +1,320 @@
+<section class="content-header">
+	<h1>
+		系统管理<small>角色管理</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+		<li><a href="#"><i class="fa fa-sun-o"></i> 基础数据管理</a></li>
+		<li class="active"><i class="fa fa-user-plus"></i>&nbsp;角色管理</li>
+	</ol>
+</section>
+
+<div class="content">
+	<!-- 总体布局模式 .container-fluid 类用于100%宽度-->
+	<div id="inner-content" class="container-fluid">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
+						<button type="button" class="btn btn-info" onclick="$.roleUtils.refresh()">刷新</button>
+						<button type="button" class="btn btn-primary" onclick="$.roleUtils.button.add()">新增</button>
+
+					</div>
+				</div>
+				<div class="row" style="margin-top: 20px;">
+					<div class="col-md-12 col-xs-12 col-lg-12 col-sm-12 panel-info">
+						<div class="panel-heading">
+							<h4 class="panel-title">角色基本信息</h4>
+						</div>
+						<div class="panel-body panel">
+							<div class="panel-content">
+								<!-- table表格 -->
+								<table id="roleTable" data-toggle="table" data-page-list="[10,20,30,ALL]" data-pagination="true" data-cache="false" data-detail-view="false"
+									data-striped="true" data-show-columns="false" data-filter-control="false" data-filter-show-clear="false" data-toolbar="#roleTableToolbar"
+									data-side-pagination="server">
+
+									<thead>
+										<tr>
+											<th data-checkbox="true"></th>
+											<th data-field="sysRoleName" data-align="center">角色名字</th>
+											<th data-field="sysRoleDesc" data-align="center">角色描述</th>
+											<th data-field="operation" data-align="center" data-formatter="$.roleUtils.formatter.operation">操作</th>
+										</tr>
+									</thead>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<div id="dialogs">
+			<!-- 新增 模态框 -->
+			<div class="modal fade" id="addRoleDialog" role="dialog" aria-hidden="true" data-backdrop="static">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title text-primary text-center"><strong>新增</strong></h4>
+						</div>
+
+						<div class="modal-body">
+							<div class="row-fluid">
+								<form class="form-horizontal" role="form" id="addRoleForm" novalidate="novalidate">
+
+									<div class="form-group">
+										<label class="col-sm-3 control-label">角色名字<span style="font-size: 15px;color: red;">*</span></label>
+										<div class="col-sm-7">
+											<input type="text" class="form-control" name="sysRoleName"  placeholder="必填">
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-sm-3 control-label">角色描述<span style="font-size: 15px;color: red;">*</span></label>
+										<div class="col-sm-7">
+											<input type="text" class="form-control" name="sysRoleDesc" placeholder="必填">
+										</div>
+									</div>
+
+								</form>
+							</div>
+						</div>
+
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary" onclick="$.roleUtils.submit.addRole()">确定</button>
+							<button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+
+			<!-- 查看 模态框 -->
+			<div class="modal fade" id="showRoleDialog" role="dialog" aria-hidden="true" data-backdrop="static">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								<h4 class="modal-title text-primary text-center"><strong>查看</strong></h4>
+						</div>
+
+						<div class="modal-body">
+							<div class="row-fluid">
+								<form class="form-horizontal" role="form" id="showRoleForm" novalidate="novalidate">
+									<div class="form-group">
+
+										<label class="col-sm-3 control-label">角色名字:</label>
+										<div class="col-sm-7">
+											<input type="text" class="form-control" name="sysRoleName" readonly>
+										</div>
+									</div>
+									<div class="form-group">
+
+										<label class="col-sm-3 control-label">角色描述:</label>
+										<div class="col-sm-7">
+											<input type="text" class="form-control" name="sysRoleDesc" readonly>
+										</div>
+									</div>
+								</form>
+							</div>
+
+						</div>
+
+						<div class="modal-footer">
+							<div style="display: inline;">
+								<button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<!-- 修改 模态框 -->
+			<div class="modal fade" id="updateRoleDialog" role="dialog" aria-hidden="true" data-backdrop="static">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title text-info text-center"><strong>修改</strong></h4>
+						</div>
+
+						<div class="modal-body">
+							<div class="row-fluid">
+								<form class="form-horizontal" role="form" id="updateRoleForm" novalidate="novalidate">
+									
+									<div class="form-group" style="display: none;">
+										<label class="col-sm-3 control-label">主键，自增:</label>
+										<div class="col-sm-7">
+											<input type="text" class="form-control" name="id" readonly>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label">角色名字:</label>
+										<div class="col-sm-7">
+											<input type="text" class="form-control" name="sysRoleName">
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-sm-3 control-label">角色描述:</label>
+										<div class="col-sm-7">
+											<input type="text" class="form-control" name="sysRoleDesc">
+										</div>
+									</div>
+
+								</form>
+							</div>
+
+						</div>
+
+						<div class="modal-footer">
+							<div style="display: inline;">
+								<button type="button" class="btn btn-primary" onclick="$.roleUtils.submit.updateRole()">确定</button>
+								<button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<!-- 删除 模态框-->
+			<div class="modal fade bs-example-modal-sm" id="deleteRoleDialog" role="dialog" aria-hidden="true" data-backdrop="static">
+				<div class="modal-dialog modal-sm">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title text-center text-danger"><strong>删除</strong></h4>
+						</div>
+
+						<div class="modal-body">
+							<div class="row-fluid">
+								<form class="form-horizontal" role="form" id="deleteRoleForm" novalidate="novalidate">
+
+
+									<input name="id" id="idForDel" type="hidden">
+
+									<h3 class="text-danger text-center">请确认是否删除?</h3>
+								</form>
+							</div>
+
+						</div>
+
+						<div class="modal-footer">
+							<div style="display: inline;">
+								<button type="button" class="btn btn-danger" onclick="$.roleUtils.submit.deleteByPrimaryKey()">确定</button>
+								<button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<!-- 批量操作 模态框-->
+			<div class="modal fade bs-example-modal-sm" id="batchRoleDialog" role="dialog" aria-hidden="true" data-backdrop="static">
+				<div class="modal-dialog modal-sm">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title text-center text-primary"><strong>批量操作</strong></h4>
+						</div>
+
+						<div class="modal-body">
+							<div class="row-fluid">
+
+								<h3 class="text-danger text-center">请确认是否进行批量操作?</h3>
+
+							</div>
+
+						</div>
+
+						<div class="modal-footer">
+							<div style="display: inline;">
+								<button type="button" class="btn btn-danger" onclick="$.roleUtils.submit.batch()">确定</button>
+								<button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<!-- 角色绑定资源对话框 -->
+			<div class="modal fade" id="changeRoleResourceDialog" role="dialog" aria-hidden="true">
+				<div class="modal-dialog" style="width: 20%; margin-top: 200px; text-align: left;">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title text-center text-primary"><strong>分配角色资源</strong></h4>
+							<input type="hidden" name="roleUidForResource"></input>
+						</div>
+
+						<div class="modal-body">
+							<div class="row-fluid">
+								<ul id="roleResourceTree" class="ztree"></ul>
+							</div>
+						</div>
+
+						<div class="modal-footer">
+							<div style="display: inline;">
+								<button type="button" class="btn btn-primary" onclick="$.role.saveRoleResource()">保存</button>
+								<button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+
+			<!-- 角色绑定表格对话框 -->
+			<div class="modal fade" id="changeRoleTableDialog" role="dialog" aria-hidden="true">
+				<div class="modal-dialog" style="width: 40%; margin-top: 200px; text-align: center;">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title text-center text-primary"><strong>分配角色应用</strong></h4>
+							<input type="hidden" name="roleId"></input>
+						</div>
+
+						<div class="modal-body">
+							<div class="row-fluid">
+								<table id="roleTableTable" data-toggle="table" data-pagination="true" data-page-size="5" data-page-list="[5,10,20,ALL]" data-pagination="true" data-cache="false" data-filter-control="false" data-detail-view="false"
+									data-show-refresh="false" data-show-toggle="false" data-show-columns="false" data-filter-show-clear="true">
+									<thead>
+										<tr>
+											<th data-field="appId" class="col-md-1 col-xs-1 col-lg-1 col-sm-1" data-align="center">ID</th>
+											<th data-field="appName" class="col-md-1 col-xs-1 col-lg-1 col-sm-1" data-align="center">应用名</th>
+											<th data-field="ownerName" class="col-md-1 col-xs-1 col-lg-1 col-sm-1" data-align="center">负责人</th>
+											<th data-field="appId" class="col-md-1 col-xs-1 col-lg-1 col-sm-1 hidden" data-align="center"></th>
+											<th data-field="sysRoleId" class="col-md-1 col-xs-1 col-lg-1 col-sm-1 hidden" data-align="center"></th>
+											<th data-field="states" data-formatter="$.roleTable.bindAppState" class="col-md-1 col-xs-1 col-lg-1 col-sm-1" data-align="center">绑定状态
+											</th>
+											<th data-field="operation" data-formatter="$.roleTable.operation" class="col-md-1 col-xs-1 col-lg-1 col-sm-1" data-align="center">操作</th>
+										</tr>
+									</thead>
+								</table>
+							</div>
+						</div>
+
+						<div class="modal-footer">
+							<div style="display: inline;">
+								<button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</div>
+<script src="../assets/js/role.js"></script>
